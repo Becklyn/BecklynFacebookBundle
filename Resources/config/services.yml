@@ -1,0 +1,26 @@
+parameters:
+    facebook.app_id:     ""
+    facebook.app_secret: ""
+    facebook.page_url:   ""
+    facebook.required_permissions: ["email"]
+
+
+services:
+
+    facebook:
+        class: %facebook_service_class%
+        arguments: [@service_container]
+
+
+    twig.extension.facebook:
+        class: OAGM\FacebookBundle\Service\FacebookTwigExtension
+        tags:
+            - { name: twig.extension }
+        arguments: [@service_container]
+
+
+
+      kernel.listener.oagm_facebook:
+        class: OAGM\FacebookBundle\Listener\IeIframeCookieListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
