@@ -20,7 +20,7 @@ services:
 
 
 
-      kernel.listener.oagm_facebook:
+    kernel.listener.oagm_facebook:
         class: OAGM\FacebookBundle\Listener\IeIframeCookieListener
         tags:
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
