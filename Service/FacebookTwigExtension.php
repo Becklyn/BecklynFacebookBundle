@@ -2,11 +2,17 @@
 
 namespace OAGM\FacebookBundle\Service;
 
-/**
- *
- */
-class FacebookTwigExtension extends \OAGM\BaseBundle\Service\AbstractTwigExtension
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
+
+class FacebookTwigExtension extends \Twig_Extension
 {
+    /**
+     * @var \Symfony\Component\DependencyInjection\ContainerInterface
+     */
+    protected $container;
+
+
     /**
      * Returns the HTML for a like button
      *
@@ -115,5 +121,44 @@ class FacebookTwigExtension extends \OAGM\BaseBundle\Service\AbstractTwigExtensi
             'fbProfileUrl' => new \Twig_Function_Method($this, 'fbProfileUrl'),
             'truncateLikeDescriptionText' => new \Twig_Function_Method($this, 'truncateLikeDescriptionText'),
         );
+    }
+
+
+
+    /**
+     * @param ContainerInterface $container
+     */
+    public function __construct (ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
+
+    /**
+     * Returns the name of the extension.
+     *
+     * @return string The extension name
+     */
+    public function getName ()
+    {
+        return __CLASS__;
+    }
+
+
+
+    /**
+     * Renders a given template
+     *
+     * @param string $template
+     * @param array $variables
+     *
+     * @return string
+     */
+    protected function render ($template, array $variables = array())
+    {
+        /** @var $twig \Symfony\Bridge\Twig\TwigEngine */
+        $twig = $this->container->get("templating");
+
+        return $twig->render($template, $variables);
     }
 }

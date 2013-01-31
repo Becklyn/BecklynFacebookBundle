@@ -1,19 +1,19 @@
-parameters:
-    facebook.app_id:     ""
-    facebook.app_secret: ""
-    facebook.page_url:   ""
-    facebook.required_permissions: ["email"]
+#parameters:
+#    facebook.app_id:     ""
+#    facebook.app_secret: ""
+#    facebook.page_url:   ""
+#    facebook.required_permissions: ["email"]
 
 
 services:
 
-    facebook:
-        class: %facebook_service_class%
-        arguments: [@service_container]
+#    facebook:
+#        class: %facebook_service_class%
+#        arguments: [@service_container]
 
 
     twig.extension.facebook:
-        class: OAGM\FacebookBundle\Service\FacebookTwigExtension
+        class: OAGM\FacebookBundle\Service\GenericFacebookTwigExtension
         tags:
             - { name: twig.extension }
         arguments: [@service_container]
