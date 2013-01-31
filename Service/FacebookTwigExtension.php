@@ -5,28 +5,26 @@ namespace OAGM\FacebookBundle\Service;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 
-class FacebookTwigExtension extends \Twig_Extension
+abstract class FacebookTwigExtension extends \Twig_Extension
 {
     /**
-     * @var \Symfony\Component\DependencyInjection\ContainerInterface
+     * Returns the facebook service
+     *
+     * @return FacebookService
      */
-    protected $container;
+    protected function getFacebook ()
+    {
+        return $this->container->get("{$this->getPrefix()}.facebook");
+    }
+
 
 
     /**
-     * Returns the HTML for a like button
+     * Returns the bundle prefix
      *
-     * @param string $url the url to like
-     * @param array $options
-     *
-     * @return string
+     * @return mixed
      */
-    public function likeButton ($url, $options = array())
-    {
-        $width = isset($options["width"]) ? $options["width"] : 90;
-        return '<div class="fb-like" data-href="' . rawurlencode($url) . '" data-send="false" data-layout="button_count" data-width="' . $width . '" data-show-faces="false"></div>';
-    }
-
+    abstract protected function getPrefix();
 
 
     /**
@@ -36,8 +34,7 @@ class FacebookTwigExtension extends \Twig_Extension
      */
     public function fbData ()
     {
-        /** @var $facebook FacebookService */
-        $facebook = $this->container->get('facebook');
+        $facebook = $this->getFacebook();
 
         $data = array(
             'hasPermissions' => $facebook->hasPermissions(),
@@ -56,9 +53,7 @@ class FacebookTwigExtension extends \Twig_Extension
      */
     public function fbAppId ()
     {
-        /** @var $facebook FacebookService */
-        $facebook = $this->container->get('facebook');
-        return $facebook->getAppId();
+        return $this->getFacebook()->getAppId();
     }
 
 
@@ -73,38 +68,10 @@ class FacebookTwigExtension extends \Twig_Extension
      */
     public function truncateLikeDescriptionText ($text, $length = 80)
     {
-        /** @var $facebook FacebookService */
-        $facebook = $this->container->get('facebook');
-        return $facebook->truncateLikeDescriptionText($text, $length);
+        return $this->getFacebook()->truncateLikeDescriptionText($text, $length);
     }
 
 
-
-    /**
-     * Returns the profile picture URL
-     *
-     * @param string $facebookId
-     *
-     * @return string
-     */
-    public function fbProfilePicture ($facebookId)
-    {
-        return "https://graph.facebook.com/{$facebookId}/picture";
-    }
-
-
-
-    /**
-     * Returns the facebook profile url
-     *
-     * @param $facebookId
-     *
-     * @return string
-     */
-    public function fbProfileUrl ($facebookId)
-    {
-        return "https://www.facebook.com/profile.php?id={$facebookId}";
-    }
 
     /**
      * Returns the defined methods
@@ -114,14 +81,18 @@ class FacebookTwigExtension extends \Twig_Extension
     public function getFunctions ()
     {
         return array(
-            'likeButton' => new \Twig_Function_Method($this, 'likeButton', array('is_safe' => array('html'))),
-            'fbData'     => new \Twig_Function_Method($this, 'fbData', array('is_safe' => array('html'))),
-            'fbAppId'     => new \Twig_Function_Method($this, 'fbAppId'),
-            'fbProfilePicture'     => new \Twig_Function_Method($this, 'fbProfilePicture'),
-            'fbProfileUrl' => new \Twig_Function_Method($this, 'fbProfileUrl'),
-            'truncateLikeDescriptionText' => new \Twig_Function_Method($this, 'truncateLikeDescriptionText'),
+            "{$this->getPrefix()}_fbData"                      => new \Twig_Function_Method($this, 'fbData', array('is_safe' => array('html'))),
+            "{$this->getPrefix()}_fbAppId"                     => new \Twig_Function_Method($this, 'fbAppId'),
+            "{$this->getPrefix()}_truncateLikeDescriptionText" => new \Twig_Function_Method($this, 'truncateLikeDescriptionText'),
         );
     }
+
+
+    //region Helpers
+    /**
+     * @var \Symfony\Component\DependencyInjection\ContainerInterface
+     */
+    protected $container;
 
 
 
@@ -134,6 +105,7 @@ class FacebookTwigExtension extends \Twig_Extension
     }
 
 
+
     /**
      * Returns the name of the extension.
      *
@@ -141,7 +113,7 @@ class FacebookTwigExtension extends \Twig_Extension
      */
     public function getName ()
     {
-        return __CLASS__;
+        return get_class($this);
     }
 
 
@@ -161,4 +133,5 @@ class FacebookTwigExtension extends \Twig_Extension
 
         return $twig->render($template, $variables);
     }
+    //endregion
 }
