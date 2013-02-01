@@ -180,6 +180,8 @@ class FacebookService
         }
         catch (\Exception $e)
         {
+            // remove data from session - we don't have the permissions anymore, we should not keep the data
+            $this->storeInSession(null);
             return null;
         }
     }
