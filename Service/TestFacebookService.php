@@ -2,27 +2,41 @@
 
 namespace OAGM\FacebookBundle\Service;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 
 /**
  * Test service for debugging purposes
  */
-class TestFacebookService extends FacebookService
+class TestFacebookService extends BaseFacebookService
 {
-    public function getFacebookUserId ()
+    public function __construct (ContainerInterface $container)
+    {
+        parent::__construct(
+            $container,
+            $this->getAppId(),
+            "123",
+            "https://www.facebook.com/onanygivenmonday",
+            array()
+        );
+    }
+
+
+    public function getUserId ()
     {
         return 143524653;
     }
 
 
 
-    public function getFacebookUserName ()
+    public function getUserName ()
     {
         return "Test User";
     }
 
 
 
-    public function getEmail ()
+    public function getUserEmail ()
     {
         return 'test@test.de';
     }
