@@ -43,9 +43,11 @@ class FacebookService extends BaseFacebookService
 
 
     /**
-     * {@inheritDoc}
+     * @param array $pathArguments
+     *
+     * @return string
      */
-    public function getPermissionsRequestUrl ($pathArguments = array())
+    public function getSimplePermissionsRequestUrl ($pathArguments = array())
     {
         return parent::getPermissionsRequestUrl("{$this->bundlePrefix}_fb_permissions_callback", $pathArguments);
     }
