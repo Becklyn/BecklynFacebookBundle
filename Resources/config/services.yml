@@ -3,6 +3,7 @@
 #    facebook.app_secret: ""
 #    facebook.page_url:   ""
 #    facebook.required_permissions: ["email"]
+#    facebook.permissions_callback_route: ""
 
 
 services:

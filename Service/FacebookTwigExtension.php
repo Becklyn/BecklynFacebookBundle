@@ -35,10 +35,11 @@ abstract class FacebookTwigExtension extends \Twig_Extension
     public function fbData ()
     {
         $facebook = $this->getFacebook();
+        $permissionsCallbackRoute = $this->container->getParameter("{$this->getPrefix()}.facebook.permissions_callback_route");
 
         $data = array(
             'hasPermissions' => $facebook->hasPermissions(),
-            'permissionsUrl' => $facebook->getPermissionsRequestUrl()
+            'permissionsUrl' => $facebook->getPermissionsRequestUrl($permissionsCallbackRoute)
         );
 
         return json_encode($data);
@@ -113,7 +114,7 @@ abstract class FacebookTwigExtension extends \Twig_Extension
      */
     public function getName ()
     {
-        return get_class($this);
+        return "{$this->getPrefix()}_" . get_class($this);
     }
 
 
