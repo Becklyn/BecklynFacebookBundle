@@ -61,4 +61,18 @@ class TestFacebookService extends BaseFacebookService
     {
         return isset($_GET['app_data']) ? $_GET['app_data'] : null;
     }
+
+
+
+    public function getCountryOfUser ()
+    {
+        return "de_DE";
+    }
+
+
+
+    public function getLocaleOfUser ()
+    {
+        return "de";
+    }
 }
