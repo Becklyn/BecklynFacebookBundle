@@ -516,4 +516,30 @@ class BaseFacebookService
 
         return $signedRequest['app_data'];
     }
+
+
+
+    /**
+     * Returns the country of the user
+     *
+     * @return null|string
+     */
+    public function getCountryOfUser ()
+    {
+        $signedRequest = $this->facebook->getSignedRequest() ?: array();
+        return isset($signedRequest["user"]["country"]) ? $signedRequest["user"]["country"] : null;
+    }
+
+
+
+    /**
+     * Returns the locale of the user
+     *
+     * @return null|string
+     */
+    public function getLocaleOfUser ()
+    {
+        $signedRequest = $this->facebook->getSignedRequest() ?: array();
+        return isset($signedRequest["user"]["locale"]) ? $signedRequest["user"]["locale"] : null;
+    }
 }
