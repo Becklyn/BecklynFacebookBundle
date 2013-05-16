@@ -3,7 +3,7 @@
     "description":  "This bundle provides basic components for the usage with facebook",
     "keywords":     ["facebook"],
     "type":         "symfony-bundle",
-    "homepage":     "https://bitbucket.org/becklyngmbh/oagm-facebook-bundle",
+    "homepage":     "https://bitbucket.org/becklyn/oagm-facebook-bundle",
     "authors":      [
         {
             "name":     "On Any Given Monday GmbH",
