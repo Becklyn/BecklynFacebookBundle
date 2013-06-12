@@ -542,4 +542,30 @@ class BaseFacebookService
         $signedRequest = $this->facebook->getSignedRequest() ?: array();
         return isset($signedRequest["user"]["locale"]) ? $signedRequest["user"]["locale"] : null;
     }
+
+
+
+    /**
+     * Returns extensive debug output
+     *
+     * @return array
+     */
+    public function debug ()
+    {
+        return array(
+            "signedRequest"            => $this->facebook->getSignedRequest(),
+            "isInFacebookButNotInPage" => $this->isInFacebookButNotInPage(),
+            "hasPermissions"           => $this->hasPermissions(),
+            "hasLiked"                 => $this->hasLikedPage(),
+            "pageTabUrl"               => $this->getPageTabUrl(),
+            "appId"                    => $this->getAppId(),
+            "userId"                   => $this->getUserId(),
+            "userName"                 => $this->getUserName(),
+            "userEmail"                => $this->getUserEmail(),
+            "userCountry"              => $this->getCountryOfUser(),
+            "userLocale"               => $this->getLocaleOfUser(),
+            "app_data"                 => $this->getFacebookPermalink(),
+            "sessionData"              => $this->loadFromSession(),
+        );
+    }
 }
