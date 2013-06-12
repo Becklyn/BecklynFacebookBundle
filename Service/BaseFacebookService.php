@@ -553,19 +553,21 @@ class BaseFacebookService
     public function debug ()
     {
         return array(
-            "signedRequest"            => $this->facebook->getSignedRequest(),
-            "isInFacebookButNotInPage" => $this->isInFacebookButNotInPage(),
-            "hasPermissions"           => $this->hasPermissions(),
-            "hasLiked"                 => $this->hasLikedPage(),
-            "pageTabUrl"               => $this->getPageTabUrl(),
-            "appId"                    => $this->getAppId(),
-            "userId"                   => $this->getUserId(),
-            "userName"                 => $this->getUserName(),
-            "userEmail"                => $this->getUserEmail(),
-            "userCountry"              => $this->getCountryOfUser(),
-            "userLocale"               => $this->getLocaleOfUser(),
-            "app_data"                 => $this->getFacebookPermalink(),
-            "sessionData"              => $this->loadFromSession(),
+            "signedRequest"              => $this->facebook->getSignedRequest(),
+            "isInFacebookButNotInPage"   => $this->isInFacebookButNotInPage(),
+            "hasPermissions"             => $this->hasPermissions(),
+            "hasLiked"                   => $this->hasLikedPage(),
+            "pageTabUrl"                 => $this->getPageTabUrl(),
+            "appId"                      => $this->getAppId(),
+            "userId"                     => $this->getUserId(),
+            "userName"                   => $this->getUserName(),
+            "userEmail"                  => $this->getUserEmail(),
+            "userCountry"                => $this->getCountryOfUser(),
+            "userLocale"                 => $this->getLocaleOfUser(),
+            "app_data"                   => $this->getFacebookPermalink(),
+            "sessionData"                => $this->loadFromSession(),
+            "baseDataSessionIdentifier"  => $this->getBaseDataSessionIdentifier(),
+            "likedPageSessionIdentifier" => $this->getLikedPageSessionIdentifier(),
         );
     }
 }
