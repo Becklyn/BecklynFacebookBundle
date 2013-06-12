@@ -11,8 +11,8 @@
         }
     ],
     "require":      {
-        "symfony/framework-bundle": ">=2.0,<2.3-dev",
-        "facebook/php-sdk": "dev-master"
+        "symfony/framework-bundle": "~2.0",
+        "facebook/php-sdk": "~3.2"
     },
     "autoload":     {
         "psr-0": { "OAGM\\FacebookBundle": "" }
