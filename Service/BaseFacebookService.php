@@ -552,7 +552,8 @@ class BaseFacebookService
      */
     public function debug ()
     {
-        return array(
+        var_dump($this->facebook);
+        print_r(array(
             "signedRequest"              => $this->facebook->getSignedRequest(),
             "isInFacebookButNotInPage"   => $this->isInFacebookButNotInPage(),
             "hasPermissions"             => $this->hasPermissions(),
@@ -568,6 +569,6 @@ class BaseFacebookService
             "sessionData"                => $this->loadFromSession(),
             "baseDataSessionIdentifier"  => $this->getBaseDataSessionIdentifier(),
             "likedPageSessionIdentifier" => $this->getLikedPageSessionIdentifier(),
-        );
+        ));
     }
 }
