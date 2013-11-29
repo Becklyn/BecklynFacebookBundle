@@ -8,16 +8,29 @@
 
 services:
 
+# A specific facebook class declaration
 #    facebook:
 #        class: %facebook_service_class%
-#        arguments: [@service_container]
+#        arguments:
+#            - @session
+#            - %facebook.app_id%
+#            - %facebook.app_secret%
+#            - %facebook.page_url%
+#            - %facebook.required_permissions%
 
 
-    twig.extension.facebook:
+# A specific facebook twig extension declaration
+#    twig.extension.facebook:
+#        class: OAGM\FacebookBundle\Service\FacebookTwigExtension
+#        tags:
+#            - { name: twig.extension }
+#        arguments: [@service_container, @facebook]
+
+
+    twig.extension.generic_facebook:
         class: OAGM\FacebookBundle\Service\GenericFacebookTwigExtension
         tags:
             - { name: twig.extension }
-        arguments: [@service_container]
 
 
 

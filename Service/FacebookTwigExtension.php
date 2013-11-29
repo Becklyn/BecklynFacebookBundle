@@ -3,43 +3,53 @@
 namespace OAGM\FacebookBundle\Service;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Templating\EngineInterface;
 
 
-abstract class FacebookTwigExtension extends \Twig_Extension
+class FacebookTwigExtension extends \Twig_Extension
 {
+    //region Helpers
     /**
-     * Returns the facebook service
-     *
-     * @return FacebookService
+     * @var FacebookService
      */
-    protected function getFacebook ()
+    protected $facebook;
+
+
+    /**
+     * The templating service
+     *
+     * @var EngineInterface
+     */
+    protected $templating;
+
+
+
+    /**
+     * @param ContainerInterface $container
+     * @param FacebookService $facebook
+     */
+    public function __construct (ContainerInterface $container, FacebookService $facebook)
     {
-        return $this->container->get("{$this->getPrefix()}.facebook");
+        $this->prefix     = ($facebook instanceof PrefixedFacebookService) ? "{$facebook->getPrefix()}_" : "";
+        $this->facebook   = $facebook;
+        $this->templating = $container->get("templating");
     }
 
 
 
     /**
-     * Returns the bundle prefix
-     *
-     * @return mixed
-     */
-    abstract protected function getPrefix();
-
-
-    /**
      * Returns a JSON representation of the facebook data
+     *
+     * @param string $redirectRoute
+     * @param array $redirectRouteParameters
      *
      * @return string
      */
-    public function fbData ()
+    public function fbData ($redirectRoute, array $redirectRouteParameters = array())
     {
-        $facebook = $this->getFacebook();
-        $permissionsCallbackRoute = $this->container->getParameter("{$this->getPrefix()}.facebook.permissions_callback_route");
-
         $data = array(
-            'hasPermissions' => $facebook->hasPermissions(),
-            'permissionsUrl' => $facebook->getPermissionsRequestUrl($permissionsCallbackRoute)
+            'hasPermissions' => $this->facebook->hasPermissions(),
+            'permissionsUrl' => $this->facebook->getPermissionsRequestUrl($redirectRoute, $redirectRouteParameters)
         );
 
         return json_encode($data);
@@ -54,22 +64,7 @@ abstract class FacebookTwigExtension extends \Twig_Extension
      */
     public function fbAppId ()
     {
-        return $this->getFacebook()->getAppId();
-    }
-
-
-
-    /**
-     * Truncates the like description text
-     *
-     * @param string $text
-     * @param int $length
-     *
-     * @return string
-     */
-    public function truncateLikeDescriptionText ($text, $length = 80)
-    {
-        return $this->getFacebook()->truncateLikeDescriptionText($text, $length);
+        return $this->facebook->getAppId();
     }
 
 
@@ -82,27 +77,9 @@ abstract class FacebookTwigExtension extends \Twig_Extension
     public function getFunctions ()
     {
         return array(
-            "{$this->getPrefix()}_fbData"                      => new \Twig_Function_Method($this, 'fbData', array('is_safe' => array('html'))),
-            "{$this->getPrefix()}_fbAppId"                     => new \Twig_Function_Method($this, 'fbAppId'),
-            "{$this->getPrefix()}_truncateLikeDescriptionText" => new \Twig_Function_Method($this, 'truncateLikeDescriptionText'),
+            "{$this->prefix}fbData"  => new \Twig_Function_Method($this, 'fbData', array('is_safe' => array('html'))),
+            "{$this->prefix}fbAppId" => new \Twig_Function_Method($this, 'fbAppId'),
         );
-    }
-
-
-    //region Helpers
-    /**
-     * @var \Symfony\Component\DependencyInjection\ContainerInterface
-     */
-    protected $container;
-
-
-
-    /**
-     * @param ContainerInterface $container
-     */
-    public function __construct (ContainerInterface $container)
-    {
-        $this->container = $container;
     }
 
 
@@ -114,7 +91,7 @@ abstract class FacebookTwigExtension extends \Twig_Extension
      */
     public function getName ()
     {
-        return "{$this->getPrefix()}_" . get_class($this);
+        return "{$this->prefix}_" . get_class($this);
     }
 
 
@@ -129,10 +106,7 @@ abstract class FacebookTwigExtension extends \Twig_Extension
      */
     protected function render ($template, array $variables = array())
     {
-        /** @var $twig \Symfony\Bridge\Twig\TwigEngine */
-        $twig = $this->container->get("templating");
-
-        return $twig->render($template, $variables);
+        return $this->templating->render($template, $variables);
     }
     //endregion
 }

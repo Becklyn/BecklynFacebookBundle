@@ -12,10 +12,33 @@ class GenericFacebookTwigExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function likeButton ($url, $options = array())
+    public function likeButton ($url, array $options = array())
     {
-        $width = isset($options["width"]) ? $options["width"] : 90;
-        return '<div class="fb-like" data-href="' . rawurlencode($url) . '" data-send="false" data-layout="button_count" data-width="' . $width . '" data-show-faces="false"></div>';
+        $defaultOptions = array(
+            "href"       => rawurlencode($url),
+            "send"       => "false",
+            "layout"     => "button_count",
+            "width"      => 90,
+            "show-faces" => "false"
+        );
+        $options = array_merge($defaultOptions, $options);
+
+        $attributes = array();
+        foreach ($options as $key => $value)
+        {
+            if (is_bool($value))
+            {
+                $sanitized = $value ? "true" : "false";
+            }
+            else
+            {
+                $sanitized = (string) $value;
+            }
+
+            $attributes[] = "data-{$key}=\"{$sanitized}\"";
+        }
+
+        return '<div class="fb-like" ' . implode(' ', $attributes) . '></div>';
     }
 
 
@@ -27,7 +50,7 @@ class GenericFacebookTwigExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function fbProfilePicture ($facebookId)
+    public function fbProfileImage ($facebookId)
     {
         return "https://graph.facebook.com/{$facebookId}/picture";
     }
@@ -48,6 +71,20 @@ class GenericFacebookTwigExtension extends \Twig_Extension
 
 
 
+    /**
+     * Returns the truncated like description text
+     *
+     * @param string $text
+     * @param int $length
+     *
+     * @return string
+     */
+    public function truncateLikeDescriptionText ($text, $length = 80)
+    {
+        return FacebookService::truncateLikeDescriptionText($text, $length);
+    }
+
+
 
     /**
      * Returns the defined methods
@@ -57,17 +94,17 @@ class GenericFacebookTwigExtension extends \Twig_Extension
     public function getFunctions ()
     {
         return array(
-            'likeButton' => new \Twig_Function_Method($this, 'likeButton', array('is_safe' => array('html'))),
-            'fbProfilePicture'     => new \Twig_Function_Method($this, 'fbProfilePicture'),
-            'fbProfileUrl' => new \Twig_Function_Method($this, 'fbProfileUrl'),
+            new \Twig_SimpleFunction('likeButton',                  array($this, 'likeButton'), array('is_safe' => array('html'))),
+            new \Twig_SimpleFunction('fbProfileImage',              array($this, 'fbProfileImage')),
+            new \Twig_SimpleFunction('fbProfileUrl',                array($this, 'fbProfileUrl')),
+            new \Twig_SimpleFunction('truncateLikeDescriptionText', array($this, 'truncateLikeDescriptionText')),
         );
     }
 
 
+
     /**
-     * Returns the name of the extension.
-     *
-     * @return string The extension name
+     * {@inheritdoc}
      */
     public function getName ()
     {

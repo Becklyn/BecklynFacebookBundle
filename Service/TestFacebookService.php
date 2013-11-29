@@ -2,18 +2,18 @@
 
 namespace OAGM\FacebookBundle\Service;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 
 /**
  * Test service for debugging purposes
  */
-class TestFacebookService extends BaseFacebookService
+class TestFacebookService extends FacebookService
 {
-    public function __construct (ContainerInterface $container)
+    public function __construct (SessionInterface $session)
     {
         parent::__construct(
-            $container,
+            $session,
             $this->getAppId(),
             "123",
             "https://www.facebook.com/onanygivenmonday",
@@ -57,7 +57,7 @@ class TestFacebookService extends BaseFacebookService
 
 
 
-    public function getFacebookPermalink ()
+    public function getAppData ()
     {
         return isset($_GET['app_data']) ? $_GET['app_data'] : null;
     }
