@@ -516,8 +516,6 @@ class FacebookService
      */
     public function debug ()
     {
-        var_dump($this->facebook);
-
         print_r(array(
             "signedRequest"              => $this->facebook->getSignedRequest(),
             "isInFacebookButNotInPage"   => $this->isInFacebookButNotInPage(),
