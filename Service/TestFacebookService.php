@@ -3,6 +3,7 @@
 namespace OAGM\FacebookBundle\Service;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 
 /**
@@ -10,10 +11,11 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  */
 class TestFacebookService extends FacebookService
 {
-    public function __construct (SessionInterface $session)
+    public function __construct (SessionInterface $session, RouterInterface $router)
     {
         parent::__construct(
             $session,
+            $router,
             $this->getAppId(),
             "123",
             "https://www.facebook.com/onanygivenmonday",
