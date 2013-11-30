@@ -18,9 +18,9 @@ class FacebookTwigExtension extends \Twig_Extension
     /**
      * The templating service
      *
-     * @var EngineInterface
+     * @var ContainerInterface
      */
-    protected $templating;
+    protected $container;
 
 
 
@@ -30,9 +30,9 @@ class FacebookTwigExtension extends \Twig_Extension
      */
     public function __construct (ContainerInterface $container, FacebookService $facebook)
     {
-        $this->prefix     = ($facebook instanceof PrefixedFacebookService) ? "{$facebook->getPrefix()}_" : "";
-        $this->facebook   = $facebook;
-        $this->templating = $container->get("templating");
+        $this->prefix    = ($facebook instanceof PrefixedFacebookService) ? "{$facebook->getPrefix()}_" : "";
+        $this->facebook  = $facebook;
+        $this->container = $container;
     }
 
 
@@ -106,7 +106,7 @@ class FacebookTwigExtension extends \Twig_Extension
      */
     protected function render ($template, array $variables = array())
     {
-        return $this->templating->render($template, $variables);
+        return $this->container->get("templating")->render($template, $variables);
     }
     //endregion
 }
