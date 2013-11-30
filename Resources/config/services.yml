@@ -13,6 +13,7 @@ services:
 #        class: %facebook_service_class%
 #        arguments:
 #            - @session
+#            - @router
 #            - %facebook.app_id%
 #            - %facebook.app_secret%
 #            - %facebook.page_url%

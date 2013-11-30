@@ -3,6 +3,7 @@
 namespace OAGM\FacebookBundle\Service;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 class FacebookService
 {
@@ -12,6 +13,12 @@ class FacebookService
      * @var SessionInterface
      */
     private $session;
+
+
+    /**
+     * @var RouterInterface
+     */
+    private $router;
 
 
     /**
@@ -99,14 +106,16 @@ class FacebookService
      * Constructs a new facebook service
      *
      * @param SessionInterface $session
+     * @param RouterInterface $router
      * @param string $appId
      * @param string $appSecret
      * @param string $fanPageUrl
      * @param array $requiredPermissions
      */
-    public function __construct (SessionInterface $session, $appId, $appSecret, $fanPageUrl, array $requiredPermissions)
+    public function __construct (SessionInterface $session, RouterInterface $router, $appId, $appSecret, $fanPageUrl, array $requiredPermissions)
     {
         $this->session             = $session;
+        $this->router              = $router;
         $this->appId               = $appId;
         $this->appSecret           = $appSecret;
         $this->fanPageUrl          = $fanPageUrl;
@@ -380,13 +389,10 @@ class FacebookService
      */
     public function getPermissionsRequestUrl ($redirectRoute, $redirectRouteParameters = array())
     {
-        /** @var $router \Symfony\Component\Routing\Router */
-        $router = $this->get('router');
-
         return $this->facebook->getLoginUrl(
             array(
                 'scope'        => implode(', ', $this->requiredPermissions),
-                'redirect_uri' => $router->generate($redirectRoute, $redirectRouteParameters, true)
+                'redirect_uri' => $this->router->generate($redirectRoute, $redirectRouteParameters, true)
             )
         );
     }
