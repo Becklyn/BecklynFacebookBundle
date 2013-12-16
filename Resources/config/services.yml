@@ -22,20 +22,17 @@ services:
 
 # A specific facebook twig extension declaration
 #    twig.extension.facebook:
-#        class: OAGM\FacebookBundle\Service\FacebookTwigExtension
+#        class: Becklyn\FacebookBundle\Service\FacebookTwigExtension
 #        tags:
 #            - { name: twig.extension }
 #        arguments: [@service_container, @facebook]
 
+    becklyn.facebook.utilities:
+        class: Becklyn\FacebookBundle\Service\UtilitiesService
 
-    twig.extension.generic_facebook:
-        class: OAGM\FacebookBundle\Service\GenericFacebookTwigExtension
+
+    twig.extension.becklyn.facebook.generic:
+        class: Becklyn\FacebookBundle\Service\GenericFacebookTwigExtension
+        arguments: [@becklyn.facebook.utilities]
         tags:
             - { name: twig.extension }
-
-
-
-    kernel.listener.oagm_facebook:
-        class: OAGM\FacebookBundle\Listener\IeIframeCookieListener
-        tags:
-            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }

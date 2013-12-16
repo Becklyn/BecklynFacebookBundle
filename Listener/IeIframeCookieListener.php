@@ -1,11 +1,11 @@
 <?php
 
-namespace OAGM\FacebookBundle\Listener;
+namespace Becklyn\FacebookBundle\Listener;
 
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 
 /**
- *
+ * Handles the P3P headers for internet explorer
  */
 class IeIframeCookieListener
 {

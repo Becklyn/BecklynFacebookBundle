@@ -1,13 +1,14 @@
 {
-    "name":         "oagm/facebook-bundle",
+    "name":         "becklyn/facebook-bundle",
     "description":  "This bundle provides basic components for the usage with facebook",
-    "keywords":     ["facebook"],
+    "keywords":     ["symfony", "facebook"],
+    "license":      "MIT",
     "type":         "symfony-bundle",
-    "homepage":     "https://bitbucket.org/becklyn/oagm-facebook-bundle",
+    "homepage":     "https://github.com/Becklyn/BecklynFacebookBundle",
     "authors":      [
         {
-            "name":     "On Any Given Monday GmbH",
-            "homepage": "http://onanygivenmonday.com/"
+            "name":     "Becklyn GmbH",
+            "homepage": "http://becklyn.com/"
         }
     ],
     "require":      {
@@ -15,8 +16,8 @@
         "facebook/php-sdk": "~3.2"
     },
     "autoload":     {
-        "psr-0": { "OAGM\\FacebookBundle": "" }
+        "psr-0": { "Becklyn\\FacebookBundle": "" }
     },
-    "target-dir": "OAGM/FacebookBundle",
+    "target-dir": "Becklyn/FacebookBundle",
     "minimum-stability": "dev"
 }
