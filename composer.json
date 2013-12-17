@@ -13,7 +13,8 @@
     ],
     "require":      {
         "symfony/symfony": "~2.0",
-        "facebook/php-sdk": "~3.2"
+        "facebook/php-sdk": "~3.2",
+        "guzzle/guzzle": "~3.8"
     },
     "autoload":     {
         "psr-0": { "Becklyn\\FacebookBundle": "" }
