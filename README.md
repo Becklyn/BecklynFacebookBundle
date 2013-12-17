@@ -60,7 +60,7 @@ Furthermore the App Model provides the following:
 
 ## Twig Extensions
 
-### Generic Twig extension
+### Facebook Utilities Twig Extension
 
 #### Definition
 This extension is automatically registered.

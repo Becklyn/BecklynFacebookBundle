@@ -32,7 +32,7 @@ services:
 
 
     twig.extension.becklyn.facebook.generic:
-        class: Becklyn\FacebookBundle\Service\GenericFacebookTwigExtension
+        class: Becklyn\FacebookBundle\Service\FacebookUtilitiesTwigExtension
         arguments: [@becklyn.facebook.utilities]
         tags:
             - { name: twig.extension }

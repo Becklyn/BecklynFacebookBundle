@@ -7,7 +7,7 @@ namespace Becklyn\FacebookBundle\Service;
  *
  * @package Becklyn\FacebookBundle\Service
  */
-class GenericFacebookTwigExtension extends \Twig_Extension
+class FacebookUtilitiesTwigExtension extends \Twig_Extension
 {
     /**
      * @var UtilitiesService
