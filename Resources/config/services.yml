@@ -30,6 +30,9 @@ services:
     becklyn.facebook.utilities:
         class: Becklyn\FacebookBundle\Service\UtilitiesService
 
+    becklyn.facebook.model.graph:
+        class: Becklyn\FacebookBundle\Model\FacebookGraphModel
+
 
     twig.extension.becklyn.facebook.generic:
         class: Becklyn\FacebookBundle\Service\FacebookUtilitiesTwigExtension

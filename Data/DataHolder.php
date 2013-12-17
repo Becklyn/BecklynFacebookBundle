@@ -34,10 +34,23 @@ class DataHolder
      *
      * @return string|null
      */
-    public function getByKey ($key, $default = null)
+    public function get ($key, $default = null)
     {
-        return array_key_exists($key, $this->data)
-            ? $this->data[$key]
-            : $default;
+        $data = $this->data;
+        $keys = explode(".", $key);
+
+        foreach ($keys as $key)
+        {
+            if (is_array($data) && array_key_exists($key, $data))
+            {
+                $data = $data[$key];
+            }
+            else
+            {
+                return $default;
+            }
+        }
+
+        return $data;
     }
 }

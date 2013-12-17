@@ -21,7 +21,7 @@ class ApiUser extends DataHolder
      */
     public function getId ()
     {
-        return $this->getByKey("id");
+        return $this->get("id");
     }
 
 
@@ -33,7 +33,7 @@ class ApiUser extends DataHolder
      */
     public function getName ()
     {
-        return $this->getByKey("name");
+        return $this->get("name");
     }
 
 
@@ -45,7 +45,7 @@ class ApiUser extends DataHolder
      */
     public function getFirstName ()
     {
-        return $this->getByKey("first_name");
+        return $this->get("first_name");
     }
 
 
@@ -57,7 +57,7 @@ class ApiUser extends DataHolder
      */
     public function getLastName ()
     {
-        return $this->getByKey("last_name");
+        return $this->get("last_name");
     }
 
 
@@ -69,7 +69,7 @@ class ApiUser extends DataHolder
      */
     public function getLink ()
     {
-        return $this->getByKey("link");
+        return $this->get("link");
     }
 
 
@@ -81,7 +81,7 @@ class ApiUser extends DataHolder
      */
     public function getUsername ()
     {
-        return $this->getByKey("username");
+        return $this->get("username");
     }
 
 
@@ -93,7 +93,7 @@ class ApiUser extends DataHolder
      */
     public function getBirthday ()
     {
-        if (!is_null($birthday = $this->getByKey("birthday")))
+        if (!is_null($birthday = $this->get("birthday")))
         {
             return \DateTime::createFromFormat("m/d/Y", $birthday);
         }
@@ -110,7 +110,7 @@ class ApiUser extends DataHolder
      */
     public function getGender ()
     {
-        return $this->getByKey("gender");
+        return $this->get("gender");
     }
 
 
@@ -122,7 +122,7 @@ class ApiUser extends DataHolder
      */
     public function getEmail ()
     {
-        return $this->getByKey("email");
+        return $this->get("email");
     }
 
 
@@ -134,6 +134,6 @@ class ApiUser extends DataHolder
      */
     public function getLocale ()
     {
-        return $this->getByKey("locale");
+        return $this->get("locale");
     }
 }

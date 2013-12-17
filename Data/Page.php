@@ -16,7 +16,7 @@ class Page extends DataHolder
      */
     public function isLikedByUser ()
     {
-        return $this->getByKey("liked");
+        return $this->get("liked");
     }
 
 
@@ -28,7 +28,7 @@ class Page extends DataHolder
      */
     public function getPageId ()
     {
-        return $this->getByKey("id");
+        return $this->get("id");
     }
 
 
@@ -40,6 +40,6 @@ class Page extends DataHolder
      */
     public function containsUserAsAdmin ()
     {
-        return $this->getByKey("admin");
+        return $this->get("admin");
     }
 }

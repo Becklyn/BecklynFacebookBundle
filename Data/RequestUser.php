@@ -16,7 +16,7 @@ class RequestUser extends DataHolder
      */
     public function getAge ()
     {
-        return $this->getByKey("age");
+        return $this->get("age");
     }
 
 
@@ -28,7 +28,7 @@ class RequestUser extends DataHolder
      */
     public function getCountry ()
     {
-        return $this->getByKey("country");
+        return $this->get("country");
     }
 
 
@@ -40,6 +40,6 @@ class RequestUser extends DataHolder
      */
     public function getLocale ()
     {
-        return $this->getByKey("locale");
+        return $this->get("locale");
     }
 }
