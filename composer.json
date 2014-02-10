@@ -2,7 +2,7 @@
     "name":         "becklyn/facebook-bundle",
     "description":  "This bundle provides basic components for the usage with facebook",
     "keywords":     ["symfony", "facebook"],
-    "license":      "MIT",
+    "license":      "BSD-3-Clause",
     "type":         "symfony-bundle",
     "homepage":     "https://github.com/Becklyn/BecklynFacebookBundle",
     "authors":      [
