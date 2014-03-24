@@ -91,7 +91,16 @@ class FacebookAppModel
         $this->sessionIdentifier   = (string) $sessionIdentifier;
 
         // force initialization of the facebook session to fix session related errors in conjunction with the Facebook SDK
-        $this->session->start();
+        try
+        {
+            $this->session->start();
+        }
+        catch (\RuntimeException $e)
+        {
+            // is thrown, when the session was already started by PHP.
+            // The error is ignored, since this is exactly what is desired (to just start a session)
+        }
+
 
         $this->initialize();
     }
