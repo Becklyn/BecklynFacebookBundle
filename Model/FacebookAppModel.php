@@ -83,15 +83,15 @@ class FacebookAppModel
     public function __construct (\Facebook $facebook, SessionInterface $session, RouterInterface $router,
                                  $fanPageUrl, array $requiredPermissions = array("email"), $sessionIdentifier = "app")
     {
-        // force initialization of the facebook session to fix session related errors in conjunction with the Facebook SDK
-        $this->session->start();
-
         $this->facebook            = $facebook;
         $this->session             = $session;
         $this->router              = $router;
         $this->fanPageUrl          = $fanPageUrl;
         $this->requiredPermissions = $requiredPermissions;
         $this->sessionIdentifier   = (string) $sessionIdentifier;
+
+        // force initialization of the facebook session to fix session related errors in conjunction with the Facebook SDK
+        $this->session->start();
 
         $this->initialize();
     }
