@@ -73,6 +73,7 @@ class FacebookAppTwigExtension extends \Twig_Extension
             new \Twig_SimpleFunction("{$this->prefix}appId",           array($this, "appId")),
             new \Twig_SimpleFunction("{$this->prefix}hasPermissions",  array($this->facebook, "hasPermissions")),
             new \Twig_SimpleFunction("{$this->prefix}permissionsUrl",  array($this->facebook, "getPermissionsRequestUrl")),
+            new \Twig_SimpleFunction("{$this->prefix}hasLikedPage",    array($this->facebook, "hasLikedPage")),
         );
     }
 
