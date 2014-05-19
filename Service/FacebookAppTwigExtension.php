@@ -69,8 +69,10 @@ class FacebookAppTwigExtension extends \Twig_Extension
     public function getFunctions ()
     {
         return array(
-            new \Twig_SimpleFunction("{$this->prefix}permissionsData",  array($this, "permissionsData"), array("is_safe" => array("html"))),
-            new \Twig_SimpleFunction("{$this->prefix}appId", array($this, "appId"))
+            new \Twig_SimpleFunction("{$this->prefix}permissionsData", array($this, "permissionsData"), array("is_safe" => array("html"))),
+            new \Twig_SimpleFunction("{$this->prefix}appId",           array($this, "appId")),
+            new \Twig_SimpleFunction("{$this->prefix}hasPermissions",  array($this->facebook, "hasPermissions")),
+            new \Twig_SimpleFunction("{$this->prefix}permissionsUrl",  array($this->facebook, "getPermissionsRequestUrl")),
         );
     }
 
