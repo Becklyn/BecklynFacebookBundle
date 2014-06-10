@@ -77,6 +77,20 @@ class UtilitiesService
 
 
     /**
+     * Returns the facebook profile url to an app scoped profile
+     *
+     * @param $facebookId
+     *
+     * @return string
+     */
+    public function fbAppScopedProfileUrl ($facebookId)
+    {
+        return "https://www.facebook.com/app_scoped_user_id/{$facebookId}/";
+    }
+
+
+
+    /**
      * Truncates the like description text
      *
      * @param string $text

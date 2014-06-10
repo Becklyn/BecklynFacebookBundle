@@ -37,6 +37,7 @@ class FacebookUtilitiesTwigExtension extends \Twig_Extension
             new \Twig_SimpleFunction('fb_likeButton',                  array($this->utilitiesService, 'likeButton'), array('is_safe' => array('html'))),
             new \Twig_SimpleFunction('fb_profileImage',                array($this->utilitiesService, 'fbProfileImage')),
             new \Twig_SimpleFunction('fb_profileUrl',                  array($this->utilitiesService, 'fbProfileUrl')),
+            new \Twig_SimpleFunction('fb_appScopedProfileUrl',         array($this->utilitiesService, 'fbAppScopedProfileUrl')),
             new \Twig_SimpleFunction('fb_truncateLikeDescriptionText', array($this->utilitiesService, 'truncateLikeDescriptionText')),
         );
     }
