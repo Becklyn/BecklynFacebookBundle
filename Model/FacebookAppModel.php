@@ -244,7 +244,7 @@ class FacebookAppModel
 
         try
         {
-            $me = $this->facebook->api('/me');
+            $me = $this->facebook->api('/me?fields=first_name,gender,last_name,email,locale,name,timezone,updated_time,verified');
             $facebookData->setApiUser( new ApiUser($me) );
         }
         catch (\Exception $e)
