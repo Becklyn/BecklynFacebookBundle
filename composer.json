@@ -12,13 +12,13 @@
         }
     ],
     "require": {
-        "facebook/graph-sdk": "~5.4",
+        "facebook/graph-sdk": "^5.4",
         "guzzlehttp/guzzle": "^5.0",
-        "symfony/config": "^3.1",
-        "symfony/dependency-injection": "^3.1",
-        "symfony/http-kernel": "^3.1",
-        "symfony/http-foundation": "^3.1",
-        "symfony/routing": "^3.1",
+        "symfony/config": "^2.8|^3.1",
+        "symfony/dependency-injection": "^2.8|^3.1",
+        "symfony/http-kernel": "^2.8|^3.1",
+        "symfony/http-foundation": "^2.8|^3.1",
+        "symfony/routing": "^2.8|^3.1",
         "twig/extensions": "^1.4"
     },
     "autoload": {
