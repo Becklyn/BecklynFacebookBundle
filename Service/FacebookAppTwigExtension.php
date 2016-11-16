@@ -3,6 +3,7 @@
 namespace Becklyn\FacebookBundle\Service;
 
 use Becklyn\FacebookBundle\Model\FacebookAppModel;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 
 /**
@@ -13,20 +14,25 @@ use Becklyn\FacebookBundle\Model\FacebookAppModel;
 class FacebookAppTwigExtension extends \Twig_Extension
 {
     /**
-     * @var FacebookAppModel
+     * @var string
      */
-    protected $facebook;
+    private $prefix;
+
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
 
 
 
     /**
-     * @param FacebookAppModel $facebook
-     * @param bool $usePrefix Flag whether all defined functions should be prefixed
+     * @param ContainerInterface $container
+     * @param bool               $usePrefix Flag whether all defined functions should be prefixed
      */
-    public function __construct (FacebookAppModel $facebook, $usePrefix = false)
+    public function __construct (ContainerInterface $container, $usePrefix = false)
     {
-        $this->prefix   = $usePrefix ? "fb_{$facebook->getSessionIdentifier()}_" : "fb_";
-        $this->facebook = $facebook;
+        $this->prefix = $usePrefix ? "fb_{$facebook->getSessionIdentifier()}_" : "fb_";
+        $this->container = $container;
     }
 
 
@@ -41,9 +47,11 @@ class FacebookAppTwigExtension extends \Twig_Extension
      */
     public function permissionsData ($redirectRoute, array $redirectRouteParameters = array())
     {
+        $facebook = $this->container->get("brax.facebook");
+
         return array(
-            "hasPermissions" => $this->facebook->hasPermissions(),
-            "permissionsUrl" => $this->facebook->getPermissionsRequestUrl($redirectRoute, $redirectRouteParameters)
+            "hasPermissions" => $facebook->hasPermissions(),
+            "permissionsUrl" => $facebook->getPermissionsRequestUrl($redirectRoute, $redirectRouteParameters)
         );
     }
 
@@ -56,7 +64,46 @@ class FacebookAppTwigExtension extends \Twig_Extension
      */
     public function appId ()
     {
-        return $this->facebook->getAppId();
+        return $this->container->get("brax.facebook")->getAppId();
+    }
+
+
+
+    /**
+     * Returns whether the user has already given permissions for the app
+     *
+     * @return bool
+     */
+    public function hasPermissions ()
+    {
+        return $this->container->get("brax.facebook")->hasPermissions();
+    }
+
+
+
+    /**
+     * Returns the request URL for the permissions login
+     *
+     * @param string $redirectRoute
+     * @param array  $redirectRouteParameters
+     *
+     * @return string
+     */
+    public function getPermissionsRequestUrl ($redirectRoute, $redirectRouteParameters = array())
+    {
+        return $this->container->get("brax.facebook")->getPermissionsRequestUrl($redirectRoute, $redirectRouteParameters);
+    }
+
+
+
+    /**
+     * Returns whether the user has liked the page
+     *
+     * @return bool
+     */
+    public function hasLikedPage ()
+    {
+        return $this->container->get("brax.facebook")->hasLikedPage();
     }
 
 
@@ -71,9 +118,9 @@ class FacebookAppTwigExtension extends \Twig_Extension
         return array(
             new \Twig_SimpleFunction("{$this->prefix}permissionsData", array($this, "permissionsData"), array("is_safe" => array("html"))),
             new \Twig_SimpleFunction("{$this->prefix}appId",           array($this, "appId")),
-            new \Twig_SimpleFunction("{$this->prefix}hasPermissions",  array($this->facebook, "hasPermissions")),
-            new \Twig_SimpleFunction("{$this->prefix}permissionsUrl",  array($this->facebook, "getPermissionsRequestUrl")),
-            new \Twig_SimpleFunction("{$this->prefix}hasLikedPage",    array($this->facebook, "hasLikedPage")),
+            new \Twig_SimpleFunction("{$this->prefix}hasPermissions",  array($this, "hasPermissions")),
+            new \Twig_SimpleFunction("{$this->prefix}permissionsUrl",  array($this, "getPermissionsRequestUrl")),
+            new \Twig_SimpleFunction("{$this->prefix}hasLikedPage",    array($this, "hasLikedPage")),
         );
     }
 
