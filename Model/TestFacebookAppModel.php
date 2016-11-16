@@ -5,6 +5,7 @@ namespace Becklyn\FacebookBundle\Model;
 use Becklyn\FacebookBundle\Data\ApiUser;
 use Becklyn\FacebookBundle\Data\Page;
 use Becklyn\FacebookBundle\Data\RequestUser;
+use Facebook\Facebook;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -28,7 +29,7 @@ class TestFacebookAppModel extends DebugFacebookAppModel
     /**
      * {@inheritdoc}
      */
-    public function __construct (\Facebook $facebook, SessionInterface $session, RouterInterface $router)
+    public function __construct (Facebook $facebook, SessionInterface $session, RouterInterface $router)
     {
         parent::__construct(
             $facebook,

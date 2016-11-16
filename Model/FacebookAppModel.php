@@ -6,6 +6,7 @@ use Becklyn\FacebookBundle\Data\ApiUser;
 use Becklyn\FacebookBundle\Data\CombinedFacebookData;
 use Becklyn\FacebookBundle\Data\Page;
 use Becklyn\FacebookBundle\Data\RequestUser;
+use Facebook\Facebook;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -20,7 +21,7 @@ class FacebookAppModel
     /**
      * The facebook api
      *
-     * @var \Facebook
+     * @var Facebook
      */
     protected $facebook;
 
@@ -73,14 +74,14 @@ class FacebookAppModel
     /**
      * Constructs a new facebook service
      *
-     * @param \Facebook $facebook
+     * @param Facebook               $facebook
      * @param SessionInterface $session
-     * @param RouterInterface $router
-     * @param string $fanPageUrl
-     * @param array $requiredPermissions
-     * @param string $sessionIdentifier
+     * @param RouterInterface  $router
+     * @param string           $fanPageUrl
+     * @param array            $requiredPermissions
+     * @param string           $sessionIdentifier
      */
-    public function __construct (\Facebook $facebook, SessionInterface $session, RouterInterface $router,
+    public function __construct (Facebook $facebook, SessionInterface $session, RouterInterface $router,
                                  $fanPageUrl, array $requiredPermissions = array("email"), $sessionIdentifier = "app")
     {
         $this->facebook            = $facebook;
@@ -145,11 +146,9 @@ class FacebookAppModel
      */
     public function getPermissionsRequestUrl ($redirectRoute, $redirectRouteParameters = array())
     {
-        return $this->facebook->getLoginUrl(
-            array(
-                'scope'        => implode(', ', $this->requiredPermissions),
-                'redirect_uri' => $this->router->generate($redirectRoute, $redirectRouteParameters, true)
-            )
+        return $this->facebook->getRedirectLoginHelper()->getLoginUrl(
+            $this->router->generate($redirectRoute, $redirectRouteParameters, true),
+            $this->requiredPermissions
         );
     }
 
@@ -162,11 +161,7 @@ class FacebookAppModel
      */
     public function getAppData ()
     {
-        $signedRequest = $this->facebook->getSignedRequest();
-
-        return (!is_null($signedRequest) && isset($signedRequest["app_data"]))
-            ? $signedRequest['app_data']
-            : null;
+        return $this->facebook->getCanvasHelper()->getAppData();
     }
 
 
@@ -218,42 +213,40 @@ class FacebookAppModel
     /**
      * Loads the facebook data from the current request and sets it on the facebook data object
      *
-     * @param CombinedFacebookData $facebookData
-     *
-     * @return null|array
+     * @param CombinedFacebookData $facebookData     *
      */
     private function setDataFromCurrentRequest (CombinedFacebookData $facebookData)
     {
-        $signedRequest = $this->facebook->getSignedRequest();
+        $signedRequest = $this->facebook->getCanvasHelper()->getSignedRequest();
 
         // still use the data from the session, if it is set
-        if (is_null($signedRequest))
+        if (null === $signedRequest)
         {
             return;
         }
 
-        if (isset($signedRequest["page"]))
+        $signedRequestData = $signedRequest->getPayload();
+
+        if (isset($signedRequestData["page"]))
         {
-            $facebookData->setPage( new Page($signedRequest["page"]) );
+            $facebookData->setPage( new Page($signedRequestData["page"]) );
         }
 
-        if (isset($signedRequest["user"]))
+        if (isset($signedRequestData["user"]))
         {
-            $facebookData->setRequestUser( new RequestUser($signedRequest["user"]) );
+            $facebookData->setRequestUser( new RequestUser($signedRequestData["user"]) );
         }
 
-        try
-        {
-            $me = $this->facebook->api('/me?fields=first_name,gender,last_name,email,locale,name,timezone,updated_time,verified');
-            $facebookData->setApiUser( new ApiUser($me) );
-        }
-        catch (\Exception $e)
-        {
-            // remove data from session - we don't have the permissions anymore, we should not keep the data
-            $facebookData->setApiUser(null);
+        $apiUser = null;
+        $accessToken = $this->facebook->getCanvasHelper()->getAccessToken();
 
-            return null;
+        if (null !== $accessToken)
+        {
+            $me = $this->facebook->get('/me?fields=first_name,gender,last_name,email,locale,name,timezone,updated_time,verified', $accessToken);
+            $apiUser = new ApiUser($me->getDecodedBody());
         }
+
+        $facebookData->setApiUser($apiUser);
     }
     //endregion
 
@@ -303,7 +296,7 @@ class FacebookAppModel
      */
     public function getAppId ()
     {
-        return $this->facebook->getAppId();
+        return $this->facebook->getApp()->getId();
     }
 
 
@@ -343,7 +336,7 @@ class FacebookAppModel
      */
     public function isInFacebookButNotInPage ()
     {
-        $signedRequest = $this->facebook->getSignedRequest();
+        $signedRequest = $this->facebook->getCanvasHelper()->getSignedRequest();
         return !empty($signedRequest) && !isset($signedRequest['page']);
     }
 

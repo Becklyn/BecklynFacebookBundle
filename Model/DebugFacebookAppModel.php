@@ -1,7 +1,7 @@
 <?php
 
 namespace Becklyn\FacebookBundle\Model;
-use Becklyn\FacebookBundle\Data\ApiUser;
+
 
 /**
  * Debug Facebook App Model
@@ -21,7 +21,6 @@ class DebugFacebookAppModel extends FacebookAppModel
     {
         print_r(
             array(
-                "signedRequest"            => $this->facebook->getSignedRequest(),
                 "isInFacebookButNotInPage" => $this->isInFacebookButNotInPage(),
                 "hasPermissions"           => $this->hasPermissions(),
                 "hasLiked"                 => $this->hasLikedPage(),

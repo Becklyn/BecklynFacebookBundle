@@ -1,24 +1,27 @@
 {
-    "name":         "becklyn/facebook-bundle",
-    "description":  "This bundle provides basic components for the usage with facebook",
-    "keywords":     ["symfony", "facebook"],
-    "license":      "BSD-3-Clause",
-    "type":         "symfony-bundle",
-    "homepage":     "https://github.com/Becklyn/BecklynFacebookBundle",
-    "authors":      [
+    "name": "becklyn/facebook-bundle",
+    "description": "This bundle provides basic components for the usage with facebook",
+    "keywords": ["symfony", "facebook"],
+    "license": "BSD-3-Clause",
+    "type": "symfony-bundle",
+    "homepage": "https://github.com/Becklyn/BecklynFacebookBundle",
+    "authors": [
         {
-            "name":     "Becklyn GmbH",
+            "name": "Becklyn GmbH",
             "homepage": "http://becklyn.com/"
         }
     ],
-    "require":      {
-        "symfony/symfony": "~2.0",
-        "facebook/php-sdk": "~3.2",
-        "guzzle/guzzle": "~3.8"
+    "require": {
+        "facebook/graph-sdk": "^5.4",
+        "guzzlehttp/guzzle": "^5.0",
+        "symfony/config": "^2.8|^3.1",
+        "symfony/dependency-injection": "^2.8|^3.1",
+        "symfony/http-kernel": "^2.8|^3.1",
+        "symfony/http-foundation": "^2.8|^3.1",
+        "symfony/routing": "^2.8|^3.1",
+        "twig/extensions": "^1.4"
     },
-    "autoload":     {
-        "psr-0": { "Becklyn\\FacebookBundle": "" }
-    },
-    "target-dir": "Becklyn/FacebookBundle",
-    "minimum-stability": "dev"
+    "autoload": {
+        "psr-4": { "Becklyn\\FacebookBundle\\": "" }
+    }
 }

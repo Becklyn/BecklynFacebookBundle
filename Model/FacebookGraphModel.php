@@ -2,13 +2,14 @@
 
 namespace Becklyn\FacebookBundle\Model;
 
-use Guzzle\Http\Client;
-use Guzzle\Http\Exception\ClientErrorResponseException;
+use Facebook\Facebook;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 
 class FacebookGraphModel
 {
     /**
-     * @var \Guzzle\Http\Client
+     * @var \GuzzleHttp\Client
      */
     private $client;
 
@@ -29,34 +30,36 @@ class FacebookGraphModel
      *
      * @link https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow/#confirm
      *
-     * @param \Facebook $facebook
+     * @param Facebook $facebook
      * @param string $code
      * @param string $redirectUri the redirect uri with which the login url was generated
      *
      * @return bool
      */
-    public function confirmIdentityWithCode (\Facebook $facebook, $code, $redirectUri)
+    public function confirmIdentityWithCode (Facebook $facebook, $code, $redirectUri)
     {
-        $request = $this->client->get("/oauth/access_token");
-        $request->getQuery()
-            ->set("client_id"     , $facebook->getAppId())
-            ->set("redirect_uri"  , $redirectUri)
-            ->set("client_secret" , $facebook->getAppSecret())
-            ->set("code"          , $code);
+        $request = $this->client->createRequest("GET", "/oauth/access_token");
+        $query = $request->getQuery();
 
-        try {
-            $response = $request->send();
+        $query->set("client_id"     , $facebook->getApp()->getId());
+        $query->set("redirect_uri"  , $redirectUri);
+        $query->set("client_secret" , $facebook->getApp()->getSecret());
+        $query->set("code"          , $code);
+
+        try
+        {
+            $response = $this->client->send($request);
             parse_str($response->getBody(true), $data);
 
             if (isset($data["access_token"]))
             {
-                $facebook->setAccessToken($data["access_token"]);
+                $facebook->setDefaultAccessToken($data["access_token"]);
                 return true;
             }
 
             return false;
         }
-        catch (ClientErrorResponseException $e)
+        catch (ClientException $e)
         {
             return false;
         }
@@ -76,18 +79,19 @@ class FacebookGraphModel
      */
     public function inspectToken ($tokenToInspect, $appToken)
     {
-        $request = $this->client->get("/debug_token");
-        $request
-            ->getQuery()
-            ->set("input_token", $tokenToInspect)
-            ->set("access_token", $appToken);
+        $request = $this->client->createRequest("GET", "/debug_token");
+        $query = $request->getQuery();
 
-        try {
-            $response = $request->send();
+        $query->set("input_token", $tokenToInspect);
+        $query->set("access_token", $appToken);
+
+        try
+        {
+            $response = $this->client->send($request);
             parse_str($response->getBody(true), $data);
             return $data;
         }
-        catch (ClientErrorResponseException $e)
+        catch (ClientException $e)
         {
             return null;
         }
@@ -102,25 +106,26 @@ class FacebookGraphModel
      * @see FacebookGraphModel::getSimpleAppToken()
      * @link https://developers.facebook.com/docs/facebook-login/access-tokens/#apptokens
      *
-     * @param \Facebook $facebook
+     * @param Facebook $facebook
      *
      * @return null
      */
-    public function getAppToken (\Facebook $facebook)
+    public function getAppToken (Facebook $facebook)
     {
-        $request = $this->client->get("/oauth/access_token");
-        $request
-            ->getQuery()
-            ->set("client_id", $facebook->getAppId())
-            ->set("client_secret", $facebook->getAppSecret())
-            ->set("grant_type", "client_credentials");
+        $request = $this->client->createRequest("GET", "/oauth/access_token");
+        $query = $request->getQuery();
 
-        try {
-            $response = $request->send();
+        $query->set("client_id", $facebook->getApp()->getId());
+        $query->set("client_secret", $facebook->getApp()->getSecret());
+        $query->set("grant_type", "client_credentials");
+
+        try
+        {
+            $response = $this->client->send($request);
             parse_str($response->getBody(true), $data);
             return $data;
         }
-        catch (ClientErrorResponseException $e)
+        catch (ClientException $e)
         {
             return null;
         }
@@ -133,12 +138,12 @@ class FacebookGraphModel
      *
      * @link https://developers.facebook.com/docs/facebook-login/access-tokens/#apptokens
      *
-     * @param \Facebook $facebook
+     * @param Facebook $facebook
      *
      * @return string
      */
-    public function getSimpleAppToken (\Facebook $facebook)
+    public function getSimpleAppToken (Facebook $facebook)
     {
-        return "{$facebook->getAppId()}|{$facebook->getAppSecret()}";
+        return "{$facebook->getApp()->getId()}|{$facebook->getApp()->getSecret()}";
     }
 }
