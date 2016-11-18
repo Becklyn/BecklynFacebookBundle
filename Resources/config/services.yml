@@ -25,7 +25,10 @@ services:
 #        class: Becklyn\FacebookBundle\Service\FacebookTwigExtension
 #        tags:
 #            - { name: twig.extension }
-#        arguments: [@service_container, @facebook]
+#        arguments:
+#            - '@service_container'
+#            - 'facebook.service.id'
+#            - false
 
     becklyn.facebook.utilities:
         class: Becklyn\FacebookBundle\Service\UtilitiesService

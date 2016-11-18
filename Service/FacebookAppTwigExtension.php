@@ -22,7 +22,8 @@ class FacebookAppTwigExtension extends \Twig_Extension
     /**
      * @var string
      */
-    private $facebookService;
+    private $facebookServiceId;
+
 
     /**
      * @var ContainerInterface
@@ -33,13 +34,13 @@ class FacebookAppTwigExtension extends \Twig_Extension
 
     /**
      * @param ContainerInterface $container
-     * @param string             $facebookService
+     * @param string             $facebookServiceId
      * @param bool               $usePrefix Flag whether all defined functions should be prefixed
      */
-    public function __construct (ContainerInterface $container, $facebookService, $usePrefix = false)
+    public function __construct (ContainerInterface $container, $facebookServiceId, $usePrefix = false)
     {
         $this->container = $container;
-        $this->facebookService = $facebookService;
+        $this->facebookServiceId = $facebookServiceId;
         $this->usePrefix = $usePrefix;
     }
 
@@ -151,7 +152,7 @@ class FacebookAppTwigExtension extends \Twig_Extension
      */
     private function getFacebookService ()
     {
-        return $this->container->get($this->facebookService);
+        return $this->container->get($this->facebookServiceId);
     }
 
 
