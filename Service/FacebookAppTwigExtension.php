@@ -16,7 +16,14 @@ class FacebookAppTwigExtension extends \Twig_Extension
     /**
      * @var string
      */
-    private $prefix;
+    private $usePrefix;
+
+
+    /**
+     * @var string
+     */
+    private $facebookServiceId;
+
 
     /**
      * @var ContainerInterface
@@ -27,12 +34,14 @@ class FacebookAppTwigExtension extends \Twig_Extension
 
     /**
      * @param ContainerInterface $container
+     * @param string             $facebookServiceId
      * @param bool               $usePrefix Flag whether all defined functions should be prefixed
      */
-    public function __construct (ContainerInterface $container, $usePrefix = false)
+    public function __construct (ContainerInterface $container, $facebookServiceId, $usePrefix = false)
     {
-        $this->prefix = $usePrefix ? "fb_{$facebook->getSessionIdentifier()}_" : "fb_";
         $this->container = $container;
+        $this->facebookServiceId = $facebookServiceId;
+        $this->usePrefix = $usePrefix;
     }
 
 
@@ -47,7 +56,7 @@ class FacebookAppTwigExtension extends \Twig_Extension
      */
     public function permissionsData ($redirectRoute, array $redirectRouteParameters = array())
     {
-        $facebook = $this->container->get("brax.facebook");
+        $facebook = $this->getFacebookService();
 
         return array(
             "hasPermissions" => $facebook->hasPermissions(),
@@ -64,7 +73,7 @@ class FacebookAppTwigExtension extends \Twig_Extension
      */
     public function appId ()
     {
-        return $this->container->get("brax.facebook")->getAppId();
+        return $this->getFacebookService()->getAppId();
     }
 
 
@@ -76,7 +85,7 @@ class FacebookAppTwigExtension extends \Twig_Extension
      */
     public function hasPermissions ()
     {
-        return $this->container->get("brax.facebook")->hasPermissions();
+        return $this->getFacebookService()->hasPermissions();
     }
 
 
@@ -91,7 +100,7 @@ class FacebookAppTwigExtension extends \Twig_Extension
      */
     public function getPermissionsRequestUrl ($redirectRoute, $redirectRouteParameters = array())
     {
-        return $this->container->get("brax.facebook")->getPermissionsRequestUrl($redirectRoute, $redirectRouteParameters);
+        return $this->getFacebookService()->getPermissionsRequestUrl($redirectRoute, $redirectRouteParameters);
     }
 
 
@@ -103,7 +112,7 @@ class FacebookAppTwigExtension extends \Twig_Extension
      */
     public function hasLikedPage ()
     {
-        return $this->container->get("brax.facebook")->hasLikedPage();
+        return $this->getFacebookService()->hasLikedPage();
     }
 
 
@@ -115,13 +124,35 @@ class FacebookAppTwigExtension extends \Twig_Extension
      */
     public function getFunctions ()
     {
+        $prefix = $this->getPrefix();
+
         return array(
-            new \Twig_SimpleFunction("{$this->prefix}permissionsData", array($this, "permissionsData"), array("is_safe" => array("html"))),
-            new \Twig_SimpleFunction("{$this->prefix}appId",           array($this, "appId")),
-            new \Twig_SimpleFunction("{$this->prefix}hasPermissions",  array($this, "hasPermissions")),
-            new \Twig_SimpleFunction("{$this->prefix}permissionsUrl",  array($this, "getPermissionsRequestUrl")),
-            new \Twig_SimpleFunction("{$this->prefix}hasLikedPage",    array($this, "hasLikedPage")),
+            new \Twig_SimpleFunction("{$prefix}permissionsData", array($this, "permissionsData"), array("is_safe" => array("html"))),
+            new \Twig_SimpleFunction("{$prefix}appId",           array($this, "appId")),
+            new \Twig_SimpleFunction("{$prefix}hasPermissions",  array($this, "hasPermissions")),
+            new \Twig_SimpleFunction("{$prefix}permissionsUrl",  array($this, "getPermissionsRequestUrl")),
+            new \Twig_SimpleFunction("{$prefix}hasLikedPage",    array($this, "hasLikedPage")),
         );
+    }
+
+
+
+    /**
+     * @return string
+     */
+    private function getPrefix ()
+    {
+        return $this->usePrefix ? "fb_{$this->getFacebookService()->getSessionIdentifier()}_" : "fb_";
+    }
+
+
+
+    /**
+     * @return FacebookAppModel
+     */
+    private function getFacebookService ()
+    {
+        return $this->container->get($this->facebookServiceId);
     }
 
 
@@ -134,6 +165,6 @@ class FacebookAppTwigExtension extends \Twig_Extension
     public function getName ()
     {
         $class = get_class($this);
-        return "{$this->prefix}_{$class}";
+        return "{$this->getPrefix()}_{$class}";
     }
 }
