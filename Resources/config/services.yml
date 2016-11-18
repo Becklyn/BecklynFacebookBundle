@@ -7,25 +7,12 @@
 
 
 services:
-
-# A specific facebook class declaration
-#    facebook:
-#        class: %facebook_service_class%
-#        arguments:
-#            - @session
-#            - @router
-#            - %facebook.app_id%
-#            - %facebook.app_secret%
-#            - %facebook.page_url%
-#            - %facebook.required_permissions%
-
-
-# A specific facebook twig extension declaration
-#    twig.extension.facebook:
-#        class: Becklyn\FacebookBundle\Service\FacebookTwigExtension
-#        tags:
-#            - { name: twig.extension }
-#        arguments: [@service_container, @facebook]
+    becklyn.facebook.sdk:
+        class: Facebook\Facebook
+        public: false
+        arguments:
+            - app_id: '%facebook.app.id%'
+              app_secret: '%facebook.app.secret%'
 
     becklyn.facebook.utilities:
         class: Becklyn\FacebookBundle\Service\UtilitiesService
@@ -33,9 +20,25 @@ services:
     becklyn.facebook.model.graph:
         class: Becklyn\FacebookBundle\Model\FacebookGraphModel
 
+    becklyn.facebook:
+        class: Becklyn\FacebookBundle\Model\FacebookAppModel
+        arguments:
+            - '@becklyn.facebook.sdk'
+            - '@session'
+            - '@router'
+            - '%facebook.page_url%'
+            - '%facebook.required_permissions%'
+
 
     twig.extension.becklyn.facebook.generic:
         class: Becklyn\FacebookBundle\Service\FacebookUtilitiesTwigExtension
         arguments: ['@becklyn.facebook.utilities']
+        tags:
+            - { name: twig.extension }
+
+    becklyn.twig.app:
+        class: Becklyn\FacebookBundle\Service\FacebookAppTwigExtension
+        arguments:
+            - '@becklyn.facebook'
         tags:
             - { name: twig.extension }
