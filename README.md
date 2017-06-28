@@ -3,6 +3,9 @@ BecklynFacebookBundle
 
 This bundle provides basic components for the usage with facebook.
 
+**This bundle is deprecated and unmaintained.**
+
+
 ## Configuration overview
 
 Including their default values.
