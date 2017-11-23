@@ -6,16 +6,6 @@ This bundle provides basic components for the usage with facebook.
 **This bundle is deprecated and unmaintained.**
 
 
-## Configuration overview
-
-Including their default values.
-
-```yaml
-becklyn_facebook:
-    add_p3p_headers: false      # automatically add P3P Headers to every response (details further down)
-```
-
-
 ## Facebook App Model
 A model which handles a lot of app ("real" app or page tab app) related logic.
 
@@ -130,19 +120,3 @@ The twig functions will now be called:
 ## CSS & SCSS
 Only one scss file is included, which sets the width and the overflow for an element with the id `#fb-wrap`, to automatically fit in the app iframe.
 You can `@import` it into your own SCSS file.
-
-
-
-## P3P Header Listener (Internet Explorer & iFrames & Cookies)
-Internet Explorer blocks cookies from iFrame pages, see the discussion on [Stack Overflow](http://stackoverflow.com/questions/389456/cookie-blocked-not-saved-in-iframe-in-internet-explorer).
-You can fix this issue by adding P3P headers to your request. Use it with caution, because it might imply legal consequences (see the discussion on Stack Overflow for details).
-
-You can use the listener provided by just setting in your config:
-
-```yaml
-becklyn_facebook:
-    add_p3p_headers: true
-```
-
-It will add the following header to all responses:
-`P3P: CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"`
