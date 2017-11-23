@@ -82,13 +82,19 @@ class FacebookAppModel
      * @param array            $requiredPermissions
      * @param string           $sessionIdentifier
      */
-    public function __construct (Facebook $facebook, SessionInterface $session, RouterInterface $router,
-        $fanPageUrl, array $requiredPermissions = array("email"), $sessionIdentifier = "app")
+    public function __construct (
+        Facebook $facebook,
+        SessionInterface $session,
+        RouterInterface $router,
+        $fanPageUrl,
+        array $requiredPermissions = array("email"),
+        $sessionIdentifier = "app"
+    )
     {
         $this->facebook            = $facebook;
         $this->session             = $session;
         $this->router              = $router;
-        $this->fanPageUrl          = $fanPageUrl;
+        $this->fanPageUrl          = rtrim($fanPageUrl, "/");
         $this->requiredPermissions = $requiredPermissions;
         $this->sessionIdentifier   = (string) $sessionIdentifier;
 
