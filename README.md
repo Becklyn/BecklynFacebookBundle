@@ -6,7 +6,8 @@ This bundle provides basic components for the usage with facebook.
 **This bundle is deprecated and unmaintained.**
 
 
-## Facebook App Model
+Facebook App Model
+------------------
 A model which handles a lot of app ("real" app or page tab app) related logic.
 
 #### Definition
@@ -51,7 +52,8 @@ Furthermore the App Model provides the following:
 * Wrapper for wall posts
 
 
-## Twig Extensions
+Twig Extensions
+---------------
 
 ### Facebook Utilities Twig Extension
 
@@ -117,6 +119,8 @@ The twig functions will now be called:
 ```
 
 
-## CSS & SCSS
+CSS & SCSS
+----------
+
 Only one scss file is included, which sets the width and the overflow for an element with the id `#fb-wrap`, to automatically fit in the app iframe.
 You can `@import` it into your own SCSS file.
