@@ -12,16 +12,16 @@ A model which handles a lot of app ("real" app or page tab app) related logic.
 
 #### Definition
 ```yaml
-my_facebook_service:
-    class: \Facebook
-    arguments: [{ appId: "123456", secret: "thisisyoursecret" }]
+Facebook\Facebook:
+    arguments: 
+        - app_id: '123456'
+          app_secret: 'thisisyoursecret'
 
-facebook_app_model:
-    class: Becklyn\FacebookBundle\Model\FacebookAppModel
+Becklyn\FacebookBundle\Model\FacebookAppModel:
     arguments:
-        - @my_facebook_service
-        - @session
-        - @router
+        - '@Facebook\Facebook'
+        - '@session'
+        - '@router'
         - "https://www.facebook.com/Symfony2Framework"          # the fan page url
         - ["email", "user_birthday", "publish_stream"]          # your required permissions
         - "session_identifier"                                  # if you need to use multiple services, you need to define unique session identifiers
