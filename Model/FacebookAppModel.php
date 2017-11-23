@@ -8,6 +8,7 @@ use Becklyn\FacebookBundle\Data\Page;
 use Becklyn\FacebookBundle\Data\RequestUser;
 use Facebook\Facebook;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 
@@ -82,7 +83,7 @@ class FacebookAppModel
      * @param string           $sessionIdentifier
      */
     public function __construct (Facebook $facebook, SessionInterface $session, RouterInterface $router,
-                                 $fanPageUrl, array $requiredPermissions = array("email"), $sessionIdentifier = "app")
+        $fanPageUrl, array $requiredPermissions = array("email"), $sessionIdentifier = "app")
     {
         $this->facebook            = $facebook;
         $this->session             = $session;
@@ -147,7 +148,7 @@ class FacebookAppModel
     public function getPermissionsRequestUrl ($redirectRoute, $redirectRouteParameters = array())
     {
         return $this->facebook->getRedirectLoginHelper()->getLoginUrl(
-            $this->router->generate($redirectRoute, $redirectRouteParameters, true),
+            $this->router->generate($redirectRoute, $redirectRouteParameters, UrlGeneratorInterface::ABSOLUTE_URL),
             $this->requiredPermissions
         );
     }
