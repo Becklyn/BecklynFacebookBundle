@@ -305,15 +305,12 @@ class FacebookAppModel
     /**
      * Returns whether the user has liked the page
      *
+     * @deprecated this feature isn't supported by Facebook anymore
      * @return bool
      */
     public function hasLikedPage ()
     {
-        $page = $this->getPage();
-
-        return !is_null($page)
-            ? $page->isLikedByUser()
-            : false;
+        return false;
     }
 
 

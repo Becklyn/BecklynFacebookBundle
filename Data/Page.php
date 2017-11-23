@@ -12,11 +12,12 @@ class Page extends DataHolder
      /**
      * Returns, whether the user has liked the page
      *
+     * @deprecated this feature isn't supported by Facebook anymore
      * @return boolean
      */
     public function isLikedByUser ()
     {
-        return $this->get("liked");
+        return false;
     }
 
 
